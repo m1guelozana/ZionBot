@@ -37,6 +37,7 @@ async def on_ready():
     print(f"We have logged in as {bot.user}")
     print(discord.__version__)
     print(f"My Prefix: {prefix}")
+
     await bot.change_presence(
         activity=discord.Activity(
             type=discord.ActivityType.watching, name=f"{bot.command_prefix}help"

@@ -9,12 +9,11 @@ class HelpCog(commands.Cog, name="help command"):
 
     @commands.command(
         name="help",
-        usage="(commandName)",
         description="Display the help message.",
-        aliases=["h", "?"],
     )
     @commands.cooldown(1, 2, commands.BucketType.member)
     async def help(self, ctx, commandName: str = None):
+        # sourcery skip: low-code-quality
 
         commandName2 = None
         stop = False
@@ -49,7 +48,7 @@ class HelpCog(commands.Cog, name="help command"):
                 aliasList = ""
                 if len(aliases) > 0:
                     for alias in aliases:
-                        aliasList += alias + ", "
+                        aliasList += f"{alias}, "
                     aliasList = aliasList[:-2]
                     embed.add_field(name="Aliases", value=aliasList)
                 else:

@@ -26,7 +26,7 @@ class HashCrackerCog(commands.Cog, name="Hash Cracker Command"):
 
     def detect_algorithm(self, hash_value):
         hash_length = len(hash_value)
-        if hash_length == 32:
+        if hash_length == 32: 
             return "md5"
         elif hash_length == 40:
             return "sha1"
@@ -46,8 +46,7 @@ class HashCrackerCog(commands.Cog, name="Hash Cracker Command"):
                 for length in range(1, max_length + 1)
             }
             for future in concurrent.futures.as_completed(future_to_attempt):
-                found_password = future.result()
-                if found_password:
+                if found_password := future.result():
                     return found_password
         return None
 
@@ -59,24 +58,24 @@ class HashCrackerCog(commands.Cog, name="Hash Cracker Command"):
                     return password
         return None
 
-    @commands.command(name="hashcracker", aliases=["hashc", "hash-cracker"], description="Cracks a given hash. If a password is not found, it will try brute force. (Only works with 4 characters length)")
+    @commands.command(name="hashcracker", description="Cracks a given hash. If a password is not found, it will try brute force. (Only works with 4 characters length)")
     async def hash_cracker(self, ctx, hash_value: str, max_length: int = 4):
         algorithm = self.detect_algorithm(hash_value)
         if not algorithm:
-            await ctx.send("Algoritmo de hash não suportado.")
+            await ctx.send("Algorith not supported")
             return
 
         for password, hashes in self.passwords.items():
             if hashes.get(algorithm) == hash_value:
-                await ctx.send(f"{ctx.author.mention} A hash `{hash_value}` corresponde à senha: `{password}` usando o algoritmo `{algorithm}`.")
+                await ctx.send(f"{ctx.author.mention}`{hash_value}`:`{password}` using: `{algorithm}`.")
                 return
 
-        await ctx.send(f"Eae {ctx.author.mention}! Estou desmascarando... Talvez demore um pouco...")
+        await ctx.send(f"{ctx.author.mention}! Unmasking.")
         found_password = await self.brute_force(hash_value, max_length)
         if found_password:
-            await ctx.send(f"{ctx.author.mention} A hash `{hash_value}` corresponde à senha encontrada pelo brute-force: `{found_password}` usando o algoritmo `{algorithm}`.")
+            await ctx.send(f"{ctx.author.mention} `{hash_value}`: `{found_password}` using: `{algorithm}`.")
         else:
-            await ctx.send(f"{ctx.author.mention} Não foi possível desmascarar a hash `{hash_value}`")
+            await ctx.send(f"{ctx.author.mention} Impossible to unmask: `{hash_value}`")
 
 async def setup(bot: commands.Bot):
     cog = HashCrackerCog(bot)

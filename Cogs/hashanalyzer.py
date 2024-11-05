@@ -7,7 +7,7 @@ class HashAnalyzerCog(commands.Cog, name="Hash AnalyzerCommand"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="analyzehash", usage="(hash_value)", description="Analyzes a given hash.")
+    @commands.command(name="analyzehash", description="Analyzes a given hash.")
     async def hash_analyze(self, ctx, hash_value: str):
         
         hash_types = {
@@ -24,10 +24,10 @@ class HashAnalyzerCog(commands.Cog, name="Hash AnalyzerCommand"):
         if hash_length == 60 and hash_value.startswith(("$2a$", "$2b$", "$2y$")):
             hash_type = "bcrypt"
         else:
-            hash_type = hash_types.get(hash_length, "Desconhecido")
+            hash_type = hash_types.get(hash_length, "Unknown hash type")
 
         await ctx.send(
-            f"{ctx.author.mention} O hash fornecido possui comprimento {hash_length} caracteres. Tipo provável: {hash_type}"
+            f"{ctx.author.mention} type:{hash_type}"
         )
 
 async def setup(bot: commands.Bot):
