@@ -19,7 +19,7 @@ class ChatBot(commands.Cog, name="ChatBot using Cohere"):
             response = co.generate(
                 model='command-r-08-2024',
                 prompt=prompt,
-                max_tokens=300,
+                max_tokens=4096,
                 temperature=0.7,
             )
             return response.generations[0].text.strip()
